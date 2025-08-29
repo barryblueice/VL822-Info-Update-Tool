@@ -1,0 +1,165 @@
+===== API Version: (V1.3.4.4) ===== 
+OS system: WIN8 WIN10
+
+EnumHubs - USB Mode (3)
+->GetKnownHubs()
+deviceDetailData->DevicePath = \\?\pci#ven_8086&dev_43ed&subsys_88f5103c&rev_11#3&11583659&0&a0#{3abf6f2d-71c4-462a-8a92-1e6861e6af27}
+System name is {36fc9e60-c465-11cf-8056-444553540000}\0001
+ RootHubName is \\.\USB#ROOT_HUB30#4&137dc9f7&0&0#{f18a0e88-c30c-11d0-8815-00a0c906bed8}
+->GetPortData with HubHandle = 25c, PortCount = 24, HubDepth = 0
+        Port[3]  Hub connected
+Device Descriptor
+  bDescriptorType     01
+  bcdUSB            0210
+  bDeviceClass        09
+  wVendorID         17ef
+  wProductID        30d5
+  wDeviceID         5554
+  iManufacturer       01 *** first Packet.Data ERROR *** String Descriptor 0 not returned, ErrorCode = 31
+ *** second Packet.Data ERROR *** String Descriptor 1 not returned. ErrorCode = 31
+
+  iProduct            02 *** first Packet.Data ERROR *** String Descriptor 0 not returned, ErrorCode = 31
+ *** second Packet.Data ERROR *** String Descriptor 2 not returned. ErrorCode = 31
+ *** first Packet.Data ERROR *** String Descriptor 0 not returned, ErrorCode = 31
+ *** second Packet.Data ERROR *** String Descriptor 3 not returned. ErrorCode = 31
+
+  Store HUB[0] - VID: 17EF, PID: 30D5, Ver: 5554
+ [0]ConnectedHubName is \\.\USB#VID_17EF&PID_30D5#MSFT20000000001#{f18a0e88-c30c-11d0-8815-00a0c906bed8} 
+*** get_HubNum++, total get hub: 1
+->GetPortData with HubHandle = 260, PortCount = 4, HubDepth = 1
+        Port[4]  Hub connected
+ [0]ConnectedHubName is \\.\USB#VID_05E3&PID_0608#6&2de596ea&0&4#{f18a0e88-c30c-11d0-8815-00a0c906bed8} 
+->GetPortData with HubHandle = 218, PortCount = 3, HubDepth = 2
+<-GetPortData
+<-GetPortData
+        Port[20]  Hub connected
+Device Descriptor
+  bDescriptorType     01
+  bcdUSB            0320
+  bDeviceClass        09
+  wVendorID         17ef
+  wProductID        30d4
+  wDeviceID         5554
+  iManufacturer       01 = R-SODIUM Tech.         
+  iProduct            02 = Ultra Enclosure SSP+    = 000000001
+  Store HUB[1] - VID: 17EF, PID: 30D4, Ver: 5554
+ [1]ConnectedHubName is \\.\USB#VID_17EF&PID_30D4#MSFT30000000001#{f18a0e88-c30c-11d0-8815-00a0c906bed8} 
+*** get_HubNum++, total get hub: 2
+->GetPortData with HubHandle = 220, PortCount = 4, HubDepth = 1
+<-GetPortData
+<-GetPortData
+deviceDetailData->DevicePath = \\?\pci#ven_8086&dev_9a17&subsys_88f5103c&rev_05#3&11583659&0&68#{3abf6f2d-71c4-462a-8a92-1e6861e6af27}
+System name is {36fc9e60-c465-11cf-8056-444553540000}\0000
+ RootHubName is \\.\USB#ROOT_HUB30#4&2547dda9&0&0#{f18a0e88-c30c-11d0-8815-00a0c906bed8}
+->GetPortData with HubHandle = 238, PortCount = 5, HubDepth = 0
+<-GetPortData
+--- quit GetKnownHubs(), Get Known Hubs Number: 2
+
+HUB[1] CurrentHUBPath = \\.\usb#vid_17ef&pid_30d4#msft30000000001#{f18a0e88-c30c-11d0-8815-00a0c906bed8}
+CheckSuspendStatus() - SUCCESS Value: 0, dwRet: 0
+
+ReloadDriver USB Mode: 3
+DevicePath = \\?\usb#vid_05e3&pid_0608#6&2de596ea&0&4#{f18a0e88-c30c-11d0-8815-00a0c906bed8}
+DevicePath = \\?\usb#vid_17ef&pid_30d4#msft30000000001#{f18a0e88-c30c-11d0-8815-00a0c906bed8}
+***RootPort Match, tool need disable selective suspend HUB[1] Depth: 0
+-> trgVPID Match
+***SetupDiCallClassInstaller DICS_PROPCHANGE failed(3758096949)
+***SetupDiCallClassInstaller DICS_PROPCHANGE failed(3758096949)
+***** U3 MatchNumber: 1, OnRootPortU3HUBNumber: 1
+
+Start to Search for Hub (speed: 3)
+EnumHubs_deviceDetailData->DevicePath = \\?\usb#vid_05e3&pid_0608#6&2de596ea&0&4#{f18a0e88-c30c-11d0-8815-00a0c906bed8} 79
+EnumHubs_deviceDetailData->DevicePath = \\?\usb#vid_17ef&pid_30d4#msft30000000001#{f18a0e88-c30c-11d0-8815-00a0c906bed8} 80
+DevicePath compare match trgVPID = vid_17ef&pid_30d4
+Hub - idVendor = 0x17EF, idProduct = 0x30D4, bcdDevice = 0x5554, Speed = 320
+GetHUBOtherInfo() - Target PID: 30d4
+[1] CurrentHUBPath: \\.\usb#vid_17ef&pid_30d4#msft30000000001#{f18a0e88-c30c-11d0-8815-00a0c906bed8}
+
+GetHubChipType() HUB[0] - VID: 0x17EF, PID: 0x30D4
+DeviceIoControl failed
+===== VT35xx Hub ID:0x3518 =====
+HUB Chip Revision: F0
+HUB VL821 Chip Ver: 00
+===== Hub ID:0x3518, VT35xxHubType: 11 =====
+Hub[0] - HUBType(11): 0x0820_Data_Q7
+=> Selected
+EnumHubs_deviceDetailData->DevicePath = \\?\usb#vid_17ef&pid_30d5#msft20000000001#{f18a0e88-c30c-11d0-8815-00a0c906bed8} 80
+EnumHubs_deviceDetailData->DevicePath = \\?\usb#root_hub30#4&137dc9f7&0&0#{f18a0e88-c30c-11d0-8815-00a0c906bed8} 72
+EnumHubs_deviceDetailData->DevicePath = \\?\usb#root_hub30#4&2547dda9&0&0#{f18a0e88-c30c-11d0-8815-00a0c906bed8} 72
+GetEnumInfo() - Get Hub Number: 1
+Hub[1] - Depth: 0, VID: 17EF, PID: 30D4, FW Ver: 5554, USB mode: 3
+
+
+Start UpdateISP()
+HUB[0] Depth = 0x0, Tyep = 11
+Isp File: .\Binfile\\VL822_Q7_5554_PID30Dx_Hybrid_Tier2_20211019.bin, TotalSize: 0x9848
+=========================================
+  UpdateVT3518Firmware() on DevIoCtrl	  
+=========================================
+LoadFlashConfig() - Cnt[0] ReadID = 9F
+Get FlashID = EF 30 12
+Get flashInfo Type[1] - ChipErase: 60, SectorErase: 20
+WantUpdateIspFile: .\Binfile\\VL822_Q7_5554_PID30Dx_Hybrid_Tier2_20211019.bin, TotalSize: 0x7841
+bSPIsEmpty: 0
+Update Block Erasing...
+Update Block Header: 0518
+- Modify Default Block Header
+Sector Erase Index: 0
+- Default Block Header Write Done
+Sector Erase Index: 1
+Sector Erase Index: 16
+Sector Erase Index: 17
+Sector Erase Index: 18
+Sector Erase Index: 19
+Sector Erase Index: 20
+Sector Erase Index: 21
+Sector Erase Index: 22
+Sector Erase Index: 23
+Sector Erase Index: 24
+Sector Erase Index: 25
+Sector Erase Index: 26
+Sector Erase Index: 27
+Sector Erase Index: 28
+Sector Erase Index: 29
+Sector Erase Index: 30
+Sector Erase Index: 31
+Update Block Programming..
+- Write FW Data to Update Block
+Write Data[0x0000]: 02
+Write Data[0x0400]: FC
+Write Data[0x0800]: 3B
+Write Data[0x0C00]: C8
+Write Data[0x1000]: 30
+Write Data[0x1400]: D3
+Write Data[0x1800]: 76
+Write Data[0x1C00]: E2
+Write Data[0x2000]: B2
+Write Data[0x2400]: 04
+Write Data[0x2800]: 90
+Write Data[0x2C00]: 12
+Write Data[0x3000]: F7
+Write Data[0x3400]: 90
+Write Data[0x3800]: 01
+Write Data[0x3C00]: 78
+Write Data[0x4000]: 75
+Write Data[0x4400]: E0
+Write Data[0x4800]: 90
+Write Data[0x4C00]: 55
+Write Data[0x5000]: 44
+Write Data[0x5400]: E0
+Write Data[0x5800]: F9
+Write Data[0x5C00]: 22
+Write Data[0x6000]: 55
+Write Data[0x6400]: E5
+Write Data[0x6800]: A3
+Write Data[0x6C00]: AE
+Write Data[0x7000]: F5
+Write Data[0x7400]: 09
+Write Data[0x7800]: 89
+- Write FW Header to Update Block
+- Update Default Block Header
+Sector Erase Index: 0
+Update FW Pass!
+ChipReset()
+--- end of UpdateISP(), Result: 0x0 ---
+

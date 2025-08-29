@@ -1,0 +1,109 @@
+; vl810filter.inf
+;
+; Copyright (c) VIA Labs, Inc.
+;
+
+[Version]
+Signature = "$Windows NT$"
+Class     = USB
+ClassGUID = {36FC9E60-C465-11CF-8056-444553540000}
+Provider  = %VLI%
+DriverPackageType=ClassFilter
+DriverPackageDisplayName="VL810 Filter Driver"
+CatalogFile=vl810filter.cat
+DriverVer=12/29/2014,14.12.29.1
+
+;
+; General installation section
+;
+
+[DefaultInstall]
+CopyFiles = @vl810filter.sys
+Addreg    = vl810filter.AddReg
+
+[DefaultInstall.NT]
+CopyFiles = @vl810filter.sys
+Addreg    = vl810filter.AddReg
+
+[DefaultInstall.NTVLI64]
+CopyFiles = @vl810filter.sys
+Addreg    = vl810filter.AddReg
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[Manufacturer]
+%VLI%=VLI, NTamd64
+
+;=======================================================================
+;                 32-Bit NT Driver
+;=======================================================================
+
+[VLI]
+%vl810filter.DrvDesc%=vl810filter,{36FC9E60-C465-11CF-8056-444553540000}\vl810filter
+
+[vl810filter]
+CopyFiles=vl810filter.Files
+
+[vl810filter.HW]
+Addreg    = vl810filter.AddReg
+
+[vl810filter.Files]
+vl810filter.sys
+
+[vl810filter.Services]
+AddService = vl810filter, , vl810filter.Service.Install 
+
+;========================================================================
+;                64-Bit NT Driver
+;========================================================================
+
+[VLI.NTamd64]
+%vl810filter.DrvDesc%=vl810filter,{36FC9E60-C465-11CF-8056-444553540000}\vl810filter
+
+
+[vl810filter.AddReg]
+HKLM, System\CurrentControlSet\Control\Class\{36FC9E60-C465-11CF-8056-444553540000}, UpperFilters, 0x00010008, vl810filter
+
+;
+; Service installation section
+;
+
+[DefaultInstall.Services]
+AddService = vl810filter, , vl810filter.Service.Install
+
+[DefaultInstall.NT.Services]
+AddService = vl810filter, , vl810filter.Service.Install
+
+[DefaultInstall.NTAMD64.Services]
+AddService = vl810filter, , vl810filter.Service.Install
+
+[vl810filter.Service.Install]
+DisplayName    = %UsbFilter.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START 
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\vl810filter.sys
+LoadOrderGroup = PNP Filter
+
+
+[SourceDisksNames]
+1=%DiskId%
+
+[SourceDisksFiles.x86]
+vl810filter.sys = 1,\x86
+
+[SourceDisksFiles.amd64]
+vl810filter.sys = 1,\amd64
+
+;
+; Localizable Strings
+;
+
+[Strings]
+
+VLI         = "VIA Labs, Inc."
+service_desc = "VL810 Filter Driver"
+UsbFilter.SVCDESC = "VL810 Filter Driver"
+DiskId = "VL810 Filter Driver Install Disk"
+vl810filter.DrvDesc = "VL810 Filter Driver"
