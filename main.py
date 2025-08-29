@@ -65,9 +65,9 @@ class USBEditor(QWidget):
 
     def refresh_firmware_files(self):
         self.firmware_selector.clear()
-        firmware_dir = os.path.join(os.getcwd(), "FirmwareFile")
+        firmware_dir = os.path.join(os.getcwd(), "Binfile")
         if os.path.exists(firmware_dir):
-            firmwares = [f for f in os.listdir(firmware_dir) if f.lower().endswith(".firmware")]
+            firmwares = [f for f in os.listdir(firmware_dir) if f.lower().endswith(".bin")]
             self.firmware_selector.addItems(firmwares)
 
     def create_labeled_input(self, label_text, default_text, key, parent_layout):
