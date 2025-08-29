@@ -1,0 +1,25 @@
+[project]
+name = "vl822-info-update-tool"
+version = "0.1.0"
+description = "VL822 Info Update tool"
+authors = [
+    {name = "barryblueice",email = "barryblueice@outlook.com"}
+]
+readme = "README.md"
+requires-python = "<3.14,>=3.9"
+dependencies = [
+    "pyside6 (>=6.9.2,<7.0.0)",
+    "nuitka (>=2.7.13,<3.0.0)"
+]
+package-mode = false
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
+priority = "primary"
+
