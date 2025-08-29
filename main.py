@@ -58,7 +58,7 @@ class USBEditor(QWidget):
         layout.addWidget(self.execute_btn)
 
         self.status_bar = QStatusBar()
-        self.status_bar.showMessage("Powered by barryblueice, 2025")
+        self.status_bar.showMessage("Powered by barryblueice, 2025.")
         layout.addWidget(self.status_bar)
 
         self.setLayout(layout)
@@ -113,12 +113,12 @@ class USBEditor(QWidget):
         if not selected_firmware:
             QMessageBox.warning(self, "Error", "No firmware file selected")
             return
-        firmware_path = os.path.join(os.getcwd(), "FirmwareFile", selected_firmware)
+        firmware_path = os.path.join(os.getcwd(), "Binfile", selected_firmware)
         if not os.path.exists(firmware_path):
             QMessageBox.warning(self, "Error", f"{selected_firmware} not found")
             return
 
-        save_path, _ = QFileDialog.getSaveFileName(self, "Save Modified Firmware", selected_firmware, "Firmwareary Files (*.firmware)")
+        save_path, _ = QFileDialog.getSaveFileName(self, "Save Modified Firmware", selected_firmware, "Binary Files (*.bin)")
         if not save_path:
             return
 
