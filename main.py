@@ -43,10 +43,10 @@ class USBEditor(QWidget):
 
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel("Select Bin File:"))
-        self.bin_selector = QComboBox()
-        self.refresh_bin_files()
-        layout.addWidget(self.bin_selector)
+        layout.addWidget(QLabel("Select Firmware File:"))
+        self.firmware_selector = QComboBox()
+        self.refresh_firmware_files()
+        layout.addWidget(self.firmware_selector)
 
         self.vendor_input, self.vendor_remain = self.create_labeled_input("Vendor:", decode_usb_descriptor(DEFAULT_VENDOR), "vendor", layout)
         self.serial_input, self.serial_remain = self.create_labeled_input("Serial Number:", decode_usb_descriptor(DEFAULT_SERIAL), "serial", layout)
@@ -63,12 +63,12 @@ class USBEditor(QWidget):
 
         self.setLayout(layout)
 
-    def refresh_bin_files(self):
-        self.bin_selector.clear()
-        bin_dir = os.path.join(os.getcwd(), "BinFile")
-        if os.path.exists(bin_dir):
-            bins = [f for f in os.listdir(bin_dir) if f.lower().endswith(".bin")]
-            self.bin_selector.addItems(bins)
+    def refresh_firmware_files(self):
+        self.firmware_selector.clear()
+        firmware_dir = os.path.join(os.getcwd(), "FirmwareFile")
+        if os.path.exists(firmware_dir):
+            firmwares = [f for f in os.listdir(firmware_dir) if f.lower().endswith(".firmware")]
+            self.firmware_selector.addItems(firmwares)
 
     def create_labeled_input(self, label_text, default_text, key, parent_layout):
         label = QLabel(label_text)
@@ -109,20 +109,20 @@ class USBEditor(QWidget):
         u3_text = self.u3_input.text()
         u2_text = self.u2_input.text()
 
-        selected_bin = self.bin_selector.currentText()
-        if not selected_bin:
-            QMessageBox.warning(self, "Error", "No bin file selected")
+        selected_firmware = self.firmware_selector.currentText()
+        if not selected_firmware:
+            QMessageBox.warning(self, "Error", "No firmware file selected")
             return
-        bin_path = os.path.join(os.getcwd(), "BinFile", selected_bin)
-        if not os.path.exists(bin_path):
-            QMessageBox.warning(self, "Error", f"{selected_bin} not found")
+        firmware_path = os.path.join(os.getcwd(), "FirmwareFile", selected_firmware)
+        if not os.path.exists(firmware_path):
+            QMessageBox.warning(self, "Error", f"{selected_firmware} not found")
             return
 
-        save_path, _ = QFileDialog.getSaveFileName(self, "Save Modified Bin", selected_bin, "Binary Files (*.bin)")
+        save_path, _ = QFileDialog.getSaveFileName(self, "Save Modified Firmware", selected_firmware, "Firmwareary Files (*.firmware)")
         if not save_path:
             return
 
-        with open(bin_path, "rb") as f:
+        with open(firmware_path, "rb") as f:
             data = bytearray(f.read())
 
         fields = [
@@ -142,7 +142,7 @@ class USBEditor(QWidget):
         with open(save_path, "wb") as f:
             f.write(data)
 
-        QMessageBox.information(self, "Success", f"Modified bin saved to:\n{save_path}")
+        QMessageBox.information(self, "Success", f"Modified firmware saved to:\n{save_path}")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
