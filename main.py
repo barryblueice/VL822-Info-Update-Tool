@@ -1,8 +1,7 @@
 import sys
 import os
 from PySide6.QtWidgets import (QApplication, QWidget, QLabel, QLineEdit, QPushButton,
-                               QVBoxLayout, QComboBox, QMessageBox, QFileDialog, QHBoxLayout)
-from PySide6.QtWidgets import QStatusBar
+                               QVBoxLayout, QComboBox, QMessageBox, QFileDialog, QStatusBar)
 
 DEFAULT_VENDOR = bytes.fromhex(
     "30 03 56 00 49 00 41 00 20 00 4C 00 61 00 62 00 73 00 2C 00 20 00 49 00 6E 00 63 00 2E 00 20 00 20 00 20 00 20 00 20 00 20 00 20 00 20 00"
@@ -22,23 +21,18 @@ def to_usb_string_descriptor(text, total_bytes, fill_char=b'\x20\x00'):
     if len(encoded) > total_bytes - 2:
         encoded = encoded[:total_bytes-2]
     padding_len = total_bytes - 2 - len(encoded)
-    if fill_char:
-        padding = fill_char * (padding_len // 2)
-    else:
-        padding = b''
+    padding = fill_char * (padding_len // 2) if fill_char else b''
     length_byte = total_bytes.to_bytes(1, 'little')
     type_byte = b'\x03'
     return length_byte + type_byte + encoded + padding
 
 def decode_usb_descriptor(data):
-    text_bytes = data[2:]
-    text = text_bytes.decode('utf-16le', errors='ignore').rstrip()
-    return text
+    return data[2:].decode('utf-16le', errors='ignore').rstrip()
 
 class USBEditor(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("VL822 Firmware Descriptor Editor")
+        self.setWindowTitle("VL822 INFO Update Tool")
 
         self.max_lengths = {
             "vendor": 48,
@@ -49,7 +43,7 @@ class USBEditor(QWidget):
 
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel("Select Firmware File:"))
+        layout.addWidget(QLabel("Select Bin File:"))
         self.bin_selector = QComboBox()
         self.refresh_bin_files()
         layout.addWidget(self.bin_selector)
@@ -62,11 +56,10 @@ class USBEditor(QWidget):
         self.execute_btn = QPushButton("Execute")
         self.execute_btn.clicked.connect(self.execute)
         layout.addWidget(self.execute_btn)
-        
+
         self.status_bar = QStatusBar()
         self.status_bar.showMessage("Powered by barryblueice, 2025")
         layout.addWidget(self.status_bar)
-
 
         self.setLayout(layout)
 
@@ -94,15 +87,12 @@ class USBEditor(QWidget):
         used_bytes = len(input_box.text().encode('utf-16le'))
         max_bytes = self.max_lengths[key] - 2
         remaining_chars = (max_bytes - used_bytes) // 2
-        if remaining_chars < 0:
-            remaining_chars = 0
-        label.setText(f"Remaining characters: {remaining_chars}")
+        label.setText(f"Remaining characters: {max(0, remaining_chars)}")
 
     def on_text_changed(self, text, input_box, label, key):
         max_bytes = self.max_lengths[key] - 2
         encoded = text.encode('utf-16le')
         if len(encoded) > max_bytes:
-
             truncated = ""
             for ch in text:
                 if len((truncated + ch).encode('utf-16le')) > max_bytes:
@@ -114,39 +104,45 @@ class USBEditor(QWidget):
         self.update_remaining_label(input_box, label, key)
 
     def execute(self):
-
-        vendor_bytes = to_usb_string_descriptor(self.vendor_input.text(), 48)
-
-        fill_char = b'\x30\x00'
-        serial_bytes = to_usb_string_descriptor(self.serial_input.text(), len(DEFAULT_SERIAL), fill_char)
-        u3_bytes = to_usb_string_descriptor(self.u3_input.text(), 48)
-        u2_bytes = to_usb_string_descriptor(self.u2_input.text(), 48)
+        vendor_text = self.vendor_input.text()
+        serial_text = self.serial_input.text()
+        u3_text = self.u3_input.text()
+        u2_text = self.u2_input.text()
 
         selected_bin = self.bin_selector.currentText()
         if not selected_bin:
-            QMessageBox.warning(self, "Error", "No Firmware file selected")
+            QMessageBox.warning(self, "Error", "No bin file selected")
             return
         bin_path = os.path.join(os.getcwd(), "BinFile", selected_bin)
         if not os.path.exists(bin_path):
             QMessageBox.warning(self, "Error", f"{selected_bin} not found")
             return
 
-        save_path, _ = QFileDialog.getSaveFileName(self, "Save Modified Firmware", selected_bin, "Binary Files (*.bin)")
+        save_path, _ = QFileDialog.getSaveFileName(self, "Save Modified Bin", selected_bin, "Binary Files (*.bin)")
         if not save_path:
             return
 
         with open(bin_path, "rb") as f:
-            data = f.read()
+            data = bytearray(f.read())
 
-        data = data.replace(DEFAULT_VENDOR, vendor_bytes)
-        data = data.replace(DEFAULT_SERIAL, serial_bytes)
-        data = data.replace(DEFAULT_U3HUB, u3_bytes)
-        data = data.replace(DEFAULT_U2HUB, u2_bytes)
+        fields = [
+            ("vendor", DEFAULT_VENDOR, vendor_text),
+            ("serial", DEFAULT_SERIAL, serial_text),
+            ("u3", DEFAULT_U3HUB, u3_text),
+            ("u2", DEFAULT_U2HUB, u2_text)
+        ]
+
+        for key, default_bytes, user_text in fields:
+            idx = data.find(default_bytes)
+            if idx != -1:
+                fill_char = b'\x30\x00' if key == "serial" else b'\x20\x00'
+                custom_bytes = to_usb_string_descriptor(user_text, len(default_bytes), fill_char)
+                data[idx:idx+len(default_bytes)] = custom_bytes
 
         with open(save_path, "wb") as f:
             f.write(data)
 
-        QMessageBox.information(self, "Success", f"Modified Firmware saved to:\n{save_path}")
+        QMessageBox.information(self, "Success", f"Modified bin saved to:\n{save_path}")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
