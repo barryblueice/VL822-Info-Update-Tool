@@ -1,6 +1,6 @@
 ## **VL822 Info Update Tool**
 
-一个用于修改VL822固件中部分Descriptor内容的工具，以达到设备自定义的目的。
+一个用于修改VL822固件中部分Descriptor内容的工具，以达到设备自定义名称的目的。
 
 <img width="400" height="439" alt="2c08074980ca5b3a7a11e470ba9103cf" src="https://github.com/user-attachments/assets/a7f49d16-8b75-4f99-96f4-e21b5b54d575" />
 
@@ -40,3 +40,5 @@
 更新后：
 
 <img width="740" height="589" alt="a3bf40c1c30293602dca5996b66d82ba" src="https://github.com/user-attachments/assets/cf2c8833-f43c-4a1c-88b0-921af4361988" />
+
+**更新后最好拔插一下HUB，不然有概率会出现无法识别的USB设备，拔插一下即可解决。**
